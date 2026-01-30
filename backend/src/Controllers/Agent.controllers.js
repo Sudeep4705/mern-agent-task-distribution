@@ -1,3 +1,4 @@
+const { rmSync } = require("node:fs")
 const Agent  = require("../Model/Agent")
 const bcrypt = require("bcrypt")
 
@@ -24,3 +25,8 @@ module.exports.AgentAdd = async(req,res)=>{
         return res.json({message:"Agent added"})
 }
 
+module.exports.getagent = async(req,res)=>{
+    let data =  await Agent.find({})
+
+    return res.json({agent:data})
+}

@@ -13,12 +13,12 @@ const agentSchema = z.object({
     .email({ message: "Invalid email address" })
     .max(255, { message: "Email must not be more than 255 characters" }),
 
-  mobile: z
-    .string({ required_error: "Phone number is required" })
-    .trim()
-    .regex(/^\+\d{1,3}\d{6,14}$/, {
-      message: "Phone number must include country code (e.g. +919876543210)",
-    }),
+mobile: z
+  .string({ required_error: "Phone number is required" })
+  .trim()
+  .regex(/^\+\d{1,3}\d{10}$/, {
+    message: "Enter '+' followed by country code and exactly 10 digits (e.g. +919876543210)",
+  }),
 
   password: z
     .string({ required_error: "Password is required" })

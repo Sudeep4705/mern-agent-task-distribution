@@ -5,7 +5,6 @@ import { useContext, useEffect } from "react"
 import { AuthContext } from "./Context/AuthContext"
 import { useNavigate } from "react-router-dom"
 export default function Login(){
-    
         const navigate = useNavigate()
          const { IsloggedIn, setIsloggedIn } = useContext(AuthContext);
     const{
@@ -15,21 +14,21 @@ export default function Login(){
         formState: { errors,isSubmitting },
 } =useForm()
 
-useEffect(() => {
-    if (IsloggedIn) {
-      navigate("/admin/add", { replace: true });
-    }
-  }, [IsloggedIn]);
 
-
-const onSubmit = async(data)=>{
-     let res =   await axios.post("http://localhost:8003/admin/login",data,{withCredentials:true})
-       if(res.data.IsloggedIn){
-        toast.success(res.data.message)
-        setIsloggedIn(true)
-       }
+const onSubmit = async (data) => {
+    try {
+        let res = await axios.post("http://localhost:8003/admin/login", data, { withCredentials: true });
+        
       
-}
+        if (res.data.IsloggedIn) {
+            toast.success(res.data.message);
+            setIsloggedIn(true);
+            navigate("/admin/add", { replace: true });
+        }
+    } catch (err) {
+        toast.error(err.response?.data?.message || "Login failed");
+    }
+};
 return(
     <>
     <div className="login px-4 md:px-0 md:w-full md:h-full md:flex md:justify-center md:items-center md:mt-10 md:mb-10">

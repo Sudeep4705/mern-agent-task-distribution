@@ -10,19 +10,16 @@ const validate = (schema) => async (req, res, next) => {
     req.body = parseBody
     return next();   
   }
-  catch(err){
-      if(err instanceof ZodError){
-        const msg =err.issues || [] 
-        console.log(msg);
+catch (err) {
+  if (err instanceof ZodError) {
+   
+    const errorMessage = err.issues[0]?.message || "Invalid data";
+    console.log("Validation Error:", errorMessage);
 
-        const errormessages = msg.map((issues)=>{
-          return issues.message;
-        })
-        return res.status(400).json({message:errormessages})    
-      }
-      next(err);
-      
+    return res.status(400).json({ message: errorMessage });    
   }
+  next(err);
+}
 };
 
 module.exports = validate;

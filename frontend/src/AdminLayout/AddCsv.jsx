@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function AddCsv(){
          const {
@@ -8,6 +9,8 @@ export default function AddCsv(){
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const navigate = useNavigate()
 
   const onSubmit = async (data) => {
     try {
@@ -25,6 +28,7 @@ export default function AddCsv(){
         }
       );
 
+      navigate("/")
       toast.success(res.data.message);
     } catch (err) {
   console.log(err.response.data); 

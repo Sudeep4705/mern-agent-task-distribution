@@ -8,7 +8,8 @@ import AddAgent from "./AdminLayout/AddAgent"
 import AdminIndexRedirect from "./AdminLayout/AdminindexRedirect"
 import AddCsv from "./AdminLayout/AddCsv"
 import AgentList from "./AdminLayout/ListAgent"
-
+import Signup from "./AdminLayout/Signup"
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
 
@@ -19,17 +20,23 @@ function App() {
     <Routes>
       {/* User */}
       <Route path="/" element={<UserLayout/>}>
-      <Route index element={<HomePage/>}/>
-
+        <Route index element={<HomePage/>}/>
       </Route>
+
       {/*Admin*/}
       <Route path="/admin" element={<AdminLayout/>}>
         <Route index element={<AdminIndexRedirect/>}/>
         <Route path="login" element={<Login/>}/>
-        <Route path="add" element={<AddAgent/>}/>
-        <Route path="csv" element={<AddCsv/>}/>
-        <Route path="agentlist" element={<AgentList/>}/>
-       
+        <Route path="signup" element={<Signup/>}/>
+
+        {/* --- Protected Routes Start --- */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="add" element={<AddAgent/>}/>
+          <Route path="csv" element={<AddCsv/>}/>
+          <Route path="agentlist" element={<AgentList/>}/>
+        </Route>
+        {/* --- Protected Routes End --- */}
+        
       </Route>
     </Routes>
     

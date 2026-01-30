@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function AddAgent() {
   const {
@@ -8,16 +9,29 @@ export default function AddAgent() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-
-  const onSubmit = async (data) => {
+const navigate = useNavigate()
+const onSubmit = async (data) => {
+  try {
     const res = await axios.post(
       "http://localhost:8003/agent/add",
       data,
       { withCredentials: true }
     );
-    toast.success(res.data.message);
-  };
-
+    
+    toast.success(res.data.message || "Agent added successfully!");
+    
+  } catch (err) {
+    
+    const errorMessage = err.response?.data?.message || "Something went wrong";
+    
+    
+    if (Array.isArray(errorMessage)) {
+      errorMessage.forEach((msg) => toast.error(msg));
+    } else {
+      toast.error(errorMessage);
+    }
+  }
+};
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-gradient-to-l from-gray-700 via-gray-300 to-gray-300 rounded-lg p-4 sm:p-6">
@@ -64,25 +78,37 @@ export default function AddAgent() {
             </div>
 
             {/* Mobile */}
-            <div>
-              <input
-                type="tel"
-                placeholder="+91 9876543210"
-                className="border-2 border-black rounded-md h-10 px-3 w-full"
-                {...register("mobile", {
-                  required: "Phone number is required",
-                  pattern: {
-                    value: /^\+\d{1,3}\s?\d{6,14}$/,
-                    message: "Enter phone number with country code",
-                  },
-                })}
-              />
-              {errors.mobile && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.mobile.message}
-                </p>
-              )}
-            </div>
+        <div>
+  <input
+    type="tel"
+    placeholder="+91 9876543210"
+    className="border-2 border-black rounded-md h-10 px-3 w-full"
+    {...register("mobile", {
+      required: "Phone number is required",
+      // Validate that the main number part is exactly 10 digits
+      pattern: {
+        // Updated Regex: 
+        // ^\+ Starts with plus
+        // \d{1,3} Country code (1-3 digits)
+        // \s? optional space
+        // \d{10}$ EXACTLY 10 digits at the end
+        value: /^\+\d{1,3}\s?\d{10}$/,
+        message: "Include '+' country code and exactly 10 digits (e.g. +91 9876543210)"
+      },
+      // Optional: Logic to ensure total string isn't too long
+      validate: (value) => {
+        const digitsOnly = value.replace(/\D/g, ""); // removes '+' and ' '
+        if (digitsOnly.length > 13) return "Total digits cannot exceed 13";
+        return true;
+      }
+    })}
+  />
+  {errors.mobile && (
+    <p className="text-red-500 text-sm mt-1">
+      {errors.mobile.message}
+    </p>
+  )}
+</div>
 
             {/* Password */}
             <div>
