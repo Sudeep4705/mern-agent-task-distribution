@@ -26,24 +26,23 @@ module.exports.TaskCsvUpload = async (req, res) => {
       return res.status(400).json({ message: "CSV is empty" });
     }
 
-    // 1. Fetch all available agents
+
     const agents = await Agent.find();
     if (agents.length === 0) {
       return res.status(400).json({ message: "No agents found in the database" });
     }
 
-    // 2. Map tasks to agents using Round Robin logic
     const distributed = rows.map((row, index) => {
       return {
         firstName: row.FirstName ? row.FirstName.trim() : "N/A",
         phone: row.Phone ? row.Phone.trim() : "N/A",
         notes: row.Notes ? row.Notes.trim() : "",
-        // This line splits the tasks across agents evenly
+    
         agentId: agents[index % agents.length]._id,
       };
     });
 
-    // 3. Save all tasks at once
+
     await Task.insertMany(distributed);
 
     res.json({ 

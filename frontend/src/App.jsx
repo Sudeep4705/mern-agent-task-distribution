@@ -29,13 +29,13 @@ function App() {
         <Route path="login" element={<Login/>}/>
         <Route path="signup" element={<Signup/>}/>
 
-        {/* --- Protected Routes Start --- */}
+   
         <Route element={<ProtectedRoute />}>
           <Route path="add" element={<AddAgent/>}/>
           <Route path="csv" element={<AddCsv/>}/>
           <Route path="agentlist" element={<AgentList/>}/>
         </Route>
-        {/* --- Protected Routes End --- */}
+
         
       </Route>
     </Routes>

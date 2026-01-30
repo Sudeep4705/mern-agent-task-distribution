@@ -1,5 +1,5 @@
 const {z} = require('zod')
-// creating schema validation using zod
+
 const signupschema = z.object({
     fullname:z.string({required_error:"Name is required"})
     .trim()

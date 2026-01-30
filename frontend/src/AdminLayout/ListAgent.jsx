@@ -79,10 +79,7 @@ return (
                 <h2 className="text-lg font-semibold text-gray-900">
                   Mobile:{task.mobile || "Unknown Agent"}
                 </h2>
-                {/* <div className="btn flex gap-2 mt-2">
-                     <button className="bg-red-500 rounded-md w-30 p-1 text-center">Edit</button>
-                     <button className="bg-red-500 rounded-md w-30 p-1 text-center">Delete</button>
-                </div> */}
+              
                
                 
              
